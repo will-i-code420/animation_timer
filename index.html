@@ -9,9 +9,18 @@
 </head>
 <body>
     <article class="timer-container">
-        <input type="text" id="duration" value="30">
+        <svg id="timer-img" height="200" width="200">
+            <circle r="90" cx="100" cy="100" fill="transparent" stroke="blue" stroke-width="10" stroke-dasharray="565"
+            stroke-dashoffset="-80" transform="rotate(-90 100 100)" />
+        </svg>
+        <div class="timer-info">
+            <input type="text" id="duration" value="30">
+            <div class="timer-btns">
+
+            </div>
         <button id="start">Start</button>
         <button id="pause">Pause</button>
+        </div>
     </article>
 </body>
 </html>
