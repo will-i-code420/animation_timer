@@ -1,13 +1,20 @@
 class Timer {
-	constructor(durationInput, startBtn, pauseBtn) {
+	constructor(durationInput, startBtn, pauseBtn, cb) {
 		this.durationInput = durationInput;
 		this.startBtn = startBtn;
 		this.pauseBtn = pauseBtn;
+		//check to see if callbacks passed in, if not won't be added to class instance
+		if (cb) {
+			this.onStart = cb.onStart;
+			this.onTick = cb.onTick;
+			this.onComplete = cb.onComplete;
+		}
 
 		this.startBtn.addEventListener('click', this.start);
 		this.pauseBtn.addEventListener('click', this.pause);
 	}
 	start = () => {
+		if (this.onStart) this.onStart();
 		this.tick();
 		this.interval = setInterval(this.tick, 1000);
 	};
@@ -17,8 +24,10 @@ class Timer {
 	tick = () => {
 		if (this.timeRemaining <= 0) {
 			this.pause();
+			if (this.onComplete) this.onComplete();
 		} else {
 			this.timeRemaining = this.timeRemaining - 1;
+			if (this.onTick) this.onTick();
 		}
 	};
 	get timeRemaining() {
@@ -34,4 +43,17 @@ const durationInput = document.querySelector('#duration');
 const startBtn = document.querySelector('#start');
 const pauseBtn = document.querySelector('#pause');
 
-const timer = new Timer(durationInput, startBtn, pauseBtn);
+// callback functions to update timer animations/screen
+const cb = {
+	onStart() {
+		console.log('timer started');
+	},
+	onTick() {
+		console.log('tick');
+	},
+	onComplete() {
+		console.log('timer done');
+	}
+};
+
+const timer = new Timer(durationInput, startBtn, pauseBtn, cb);
